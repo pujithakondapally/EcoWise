@@ -51,7 +51,7 @@ const WasteClassification = () => {
 
   return (
     <div style={{ textAlign: "center", padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>Waste Classification</h1>
+      <h1 style={{color:"black"}}>Waste Classification</h1>
       <button onClick={captureImage} style={{ padding: "10px 20px", margin: "10px", fontSize: "16px", cursor: "pointer" }}>
         Capture Image
       </button>
@@ -61,7 +61,7 @@ const WasteClassification = () => {
       <button onClick={classifyImage} style={{ padding: "10px 20px", margin: "10px", fontSize: "16px", cursor: "pointer" }}>
         Classify Image
       </button>
-      <p>{result}</p>
+      <p style={{color:"black"}}>{result}</p>
     </div>
   );
 };

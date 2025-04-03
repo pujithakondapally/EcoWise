@@ -78,7 +78,7 @@ def capture_image(filename='captured_image.jpg'):
     ret, frame = cap.read()
     if ret:
         cv2.imwrite(filename, frame)
-        cv2.imwrite("C:/Users/pujit/EcoWise/ecowise/ecowise/public/image.jpg",frame)
+        cv2.imwrite("C:/Users/keert/BVRIT/EcoWise/ecowise/ecowise/public/image.jpg",frame)
     cap.release()
     return filename if ret else None
 

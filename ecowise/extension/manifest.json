@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Eco-Friendly Shopping Assistant",
+  "version": "3.0",
+  "description": "Find eco-friendly alternatives for products while shopping online.",
+  "permissions": ["activeTab", "scripting"],
+  "background": {
+      "service_worker": "background.js"
+  },
+  "host_permissions": [
+      "https://generativelanguage.googleapis.com/*"
+  ],
+  "content_scripts": [
+      {
+          "matches": ["*://www.google.com/search*"],
+          "js": ["content.js"]
+      }
+  ],
+  "action": {
+      "default_popup": "popup.html",
+      "default_icon": "icon.png"
+  }
+}
