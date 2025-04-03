@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Classification</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script>
+        let model;
+        
+        async function loadModel() {
+            model = await tf.loadGraphModel('https://huggingface.co/watersplash/waste-classification/resolve/main/model.json');
+            console.log("Model loaded successfully");
+        }
+
+        const classMapping = {
+            0: 'Battery',
+            1: 'Biological Waste',
+            2: 'Brown Glass',
+            3: 'Cardboard',
+            4: 'Clothes',
+            5: 'Green Glass',
+            6: 'Metal',
+            7: 'Paper',
+            8: 'Plastic',
+            9: 'Shoes',
+            10: 'Trash',
+            11: 'White Glass'
+        };
+        
+        async function classifyImage() {
+            let imageElement = document.getElementById("uploadedImage");
+            let tensor = tf.browser.fromPixels(imageElement)
+                .resizeNearestNeighbor([224, 224]) // Adjust based on model input size
+                .toFloat()
+                .expandDims();
+            
+            let predictedClassIndex = predictions.indexOf(Math.max(...predictions));
+            let predictedClassName = classMapping[predictedClassIndex];
+
+            document.getElementById("result").innerText = `The identified product is: ${predictedClassName}`;
+        }
+        
+        function previewImage(event) {
+            let reader = new FileReader();
+            reader.onload = function(){
+                let output = document.getElementById("uploadedImage");
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        
+        window.onload = loadModel;
+    </script>
+</head>
+<body>
+    <h2>Upload an Image for Classification</h2>
+    <input type="file" accept="image/*" onchange="previewImage(event)">
+    <br><br>
+    <img id="uploadedImage" width="224" height="224">
+    <br><br>
+    <button onclick="classifyImage()">Classify Image</button>
+    <p id="result"></p>
+</body>
+</html>

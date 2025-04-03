@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Classification</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        img { width: 300px; height: auto; margin-top: 10px; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Waste Classification</h1>
+    <button onclick="captureImage()">Capture Image</button>
+    <br>
+    <img id="capturedImage" src="" alt="Captured Image">
+    <br>
+    <button onclick="classifyImage()">Classify Image</button>
+    <p id="result"></p>
+
+    <script>
+        const classMapping = {
+            0: 'Battery',
+            1: 'Biological Waste',
+            2: 'Brown Glass',
+            3: 'Cardboard',
+            4: 'Clothes',
+            5: 'Green Glass',
+            6: 'Metal',
+            7: 'Paper',
+            8: 'Plastic',
+            9: 'Shoes',
+            10: 'Trash',
+            11: 'White Glass'
+        };
+        function captureImage() {
+            fetch('http://127.0.0.1:5000/capture')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.image_path) {
+                        document.getElementById('capturedImage').src = data.image_path;
+                        document.getElementById('capturedImage').dataset.path = data.image_path;
+                    } else {
+                        alert('Failed to capture image');
+                    }
+                });
+        }
+
+        function classifyImage() {
+            //let imagePath = document.getElementById('capturedImage').dataset.path;
+            //if (!imagePath) {
+                //alert('No image captured');
+                //return;
+            //}
+
+            fetch('http://127.0.0.1:5000/classify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image_path: "captured_image.png" })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = "Predicted Class: " + classMapping[data.predicted_class];
+            });
+        }
+    </script>
+</body>
+</html>
